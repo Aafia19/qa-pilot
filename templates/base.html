@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Pilot</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #F7F9FB;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 240px;
+            background-color: #1F4E79; /* Primary Blue */
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .sidebar h2 { margin-top: 0; }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 12px 0;
+            font-weight: bold;
+        }
+        .sidebar a:hover { opacity: 0.8; }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .topbar {
+            height: 64px;
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #CCCCCC;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            justify-content: space-between;
+        }
+        .content {
+            padding: 24px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <!-- A clean owl mascot icon fits perfectly right here above the title -->
+        <h2>QA Pilot</h2>
+        <a href="/dashboard">Dashboard</a>
+        <a href="#">Issues</a>
+        <a href="#">Kanban Board</a>
+        <a href="#">Test Cases</a>
+        <a href="#">Release Readiness</a>
+        <a href="#">Users</a>
+    </div>
+    
+    <div class="main-content">
+        <div class="topbar">
+            <h3 style="margin:0; color:#2C3E50;">Dashboard</h3>
+            <div style="color:#7f8c8d; font-size:14px;">Admin User</div>
+        </div>
+        
+        <div class="content">
+            <!-- This is the magic tag where dashboard.html will inject its specific content -->
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</body>
+</html>

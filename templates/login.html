@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Pilot - Login</title>
+    <style>
+        /* This CSS perfectly matches your Figma design system */
+        body {
+            background-color: #F7F9FB; /* Light Gray Background */
+            font-family: Arial, sans-serif; /* Clean sans-serif font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-box {
+            background-color: #FFFFFF;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Subtle drop shadow */
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .login-box h1 {
+            color: #1F4E79; /* Primary Dark Blue */
+            margin-bottom: 5px;
+        }
+        .login-box p {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #2C3E50;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #CCCCCC; /* Light gray border */
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .login-btn {
+            width: 100%;
+            background-color: #F39C12; /* Accent Orange */
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .login-btn:hover {
+            background-color: #e67e22; /* Slightly darker orange when hovering */
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <!-- You can replace the text below with an owl image tag later! -->
+        <h1>QA Pilot</h1>
+        <p>Product Validation Dashboard</p>
+        
+        <!-- This form temporarily routes straight to the dashboard for testing -->
+        <form action="/dashboard" method="GET">
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+    </div>
+</body>
+</html>
