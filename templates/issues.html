@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <h2 style="color: #2C3E50; margin: 0;">Issue Tracker</h2>
+    <a href="/add_issue" style="background-color: #1F4E79; color: white; padding: 10px 16px; text-decoration: none; border-radius: 4px; font-weight: bold;">+ Report Issue</a>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #CCCCCC; border-radius: 4px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="border-bottom: 2px solid #EEEEEE; color: #7f8c8d;">
+                <th style="padding: 12px 8px;">ID</th>
+                <th style="padding: 12px 8px;">Title</th>
+                <th style="padding: 12px 8px;">Status</th>
+                <th style="padding: 12px 8px;">Severity</th>
+                <th style="padding: 12px 8px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for issue in issues %}
+            <tr style="border-bottom: 1px solid #EEEEEE; color: #2C3E50;">
+                <td style="padding: 12px 8px;">#{{ issue.id }}</td>
+                <td style="padding: 12px 8px; font-weight: bold;">{{ issue.title }}</td>
+                <td style="padding: 12px 8px;">
+                    <span style="background-color: {% if issue.status == 'Open' %}#FEF9E7; color: #F39C12;{% elif issue.status == 'In QA' %}#EAF2F8; color: #3498DB;{% else %}#E8F8F5; color: #16A085;{% endif %} padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                        {{ issue.status }}
+                    </span>
+                </td>
+                <td style="padding: 12px 8px;">
+                    <span style="background-color: {% if issue.severity == 'Critical' %}#FDEDEC; color: #C0392B;{% else %}#F4F6F6; color: #7F8C8D;{% endif %} padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                        {{ issue.severity }}
+                    </span>
+                </td>
+                <td style="padding: 12px 8px;">
+                    <a href="/edit_issue/{{ issue.id }}" style="color: #3498DB; text-decoration: none;">View / Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

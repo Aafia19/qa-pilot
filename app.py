@@ -72,6 +72,7 @@ def add_user():
         db.session.commit()
         
         return redirect(url_for('users'))
+    return render_template('add_user.html')
 @app.route('/delete_user/<int:id>')
 def delete_user(id):
     user_to_delete = User.query.get_or_404(id)
@@ -79,7 +80,7 @@ def delete_user(id):
     db.session.commit()
     return redirect(url_for('users'))
         
-@app.route('/edit_user/<int:id>', methods=['GET', 'POST']). #this functions helps to edit a user information without having to delete the whole thing
+@app.route('/edit_user/<int:id>', methods=['GET', 'POST']) #this function helps to edit a user information without having to delete the whole thing
 def edit_user(id):
     user_to_edit = User.query.get_or_404(id)
     
@@ -94,6 +95,42 @@ def edit_user(id):
         return redirect(url_for('users'))
         
     return render_template('edit_user.html', user=user_to_edit)
-    return render_template('add_user.html')
+
+@app.route('/issues')
+def issues():
+    all_issues = Issue.query.order_by(Issue.date_created.desc()).all()
+    return render_template('issues.html', issues=all_issues)
+
+@app.route('/add_issue', methods=['GET', 'POST'])
+def add_issue():
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        status = request.form['status']
+        severity = request.form['severity']
+        
+        new_issue = Issue(title=title, description=description, status=status, severity=severity)
+        db.session.add(new_issue)
+        db.session.commit()
+        
+        return redirect(url_for('issues'))
+        
+    return render_template('add_issue.html')
+
+@app.route('/edit_issue/<int:id>', methods=['GET', 'POST'])
+def edit_issue(id):
+    issue_to_edit = Issue.query.get_or_404(id)
+    
+    if request.method == 'POST':
+        issue_to_edit.title = request.form['title']
+        issue_to_edit.description = request.form['description']
+        issue_to_edit.status = request.form['status']
+        issue_to_edit.severity = request.form['severity']
+        
+        db.session.commit()
+        return redirect(url_for('issues'))
+        
+    return render_template('edit_issue.html', issue=issue_to_edit)
+
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
