@@ -35,6 +35,16 @@ class Issue(db.Model):
     def __repr__(self):
         return f'<Issue {self.title}>'
 
+class TestCase(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    status = db.Column(db.String(20), default='Not Run')
+    issue_id = db.Column(db.Integer, nullable=True)
+    
+    def __repr__(self):
+        return f'<TestCase {self.title}>'
+
 # --- Routes ---
 
 @app.route('/')
@@ -131,6 +141,43 @@ def edit_issue(id):
         return redirect(url_for('issues'))
         
     return render_template('edit_issue.html', issue=issue_to_edit)
+
+@app.route('/kanban')
+def kanban():
+    open_issues = Issue.query.filter_by(status='Open').all()
+    in_qa_issues = Issue.query.filter_by(status='In QA').all()
+    resolved_issues = Issue.query.filter_by(status='Resolved').all()
+    
+    return render_template(
+        'kanban.html', 
+        open_issues=open_issues, 
+        in_qa_issues=in_qa_issues, 
+        resolved_issues=resolved_issues
+    )
+
+@app.route('/test_cases')
+def test_cases():
+    all_tests = TestCase.query.all()
+    return render_template('test_cases.html', test_cases=all_tests)
+
+@app.route('/add_test_case', methods=['GET', 'POST'])
+def add_test_case():
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        issue_id = request.form['issue_id']
+        
+        if issue_id == "":
+            issue_id = None
+            
+        new_test = TestCase(title=title, description=description, issue_id=issue_id)
+        db.session.add(new_test)
+        db.session.commit()
+        
+        return redirect(url_for('test_cases'))
+        
+    active_issues = Issue.query.filter(Issue.status != 'Resolved').all()
+    return render_template('add_test_case.html', issues=active_issues)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 24px;">
+    <h2 style="color: #2C3E50; margin: 0;">Kanban Board</h2>
+</div>
+
+<div style="display: flex; gap: 20px; align-items: flex-start;">
+    
+    <div style="flex: 1; background: #F4F6F7; border-radius: 6px; padding: 15px; border: 1px solid #E5E7EB; min-height: 400px;">
+        <h3 style="color: #F39C12; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Open</h3>
+        {% for issue in open_issues %}
+        <div style="background: white; padding: 15px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 10px; border-left: 4px solid #F39C12;">
+            <a href="/edit_issue/{{ issue.id }}" style="text-decoration: none; color: #2C3E50; font-weight: bold; display: block; margin-bottom: 5px;">{{ issue.title }}</a>
+            <span style="font-size: 12px; background: #F4F6F6; color: #7F8C8D; padding: 3px 6px; border-radius: 3px;">{{ issue.severity }}</span>
+            <span style="font-size: 12px; color: #95A5A6; float: right;">#{{ issue.id }}</span>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div style="flex: 1; background: #F4F6F7; border-radius: 6px; padding: 15px; border: 1px solid #E5E7EB; min-height: 400px;">
+        <h3 style="color: #3498DB; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">In QA</h3>
+        {% for issue in in_qa_issues %}
+        <div style="background: white; padding: 15px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 10px; border-left: 4px solid #3498DB;">
+            <a href="/edit_issue/{{ issue.id }}" style="text-decoration: none; color: #2C3E50; font-weight: bold; display: block; margin-bottom: 5px;">{{ issue.title }}</a>
+            <span style="font-size: 12px; background: #F4F6F6; color: #7F8C8D; padding: 3px 6px; border-radius: 3px;">{{ issue.severity }}</span>
+            <span style="font-size: 12px; color: #95A5A6; float: right;">#{{ issue.id }}</span>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div style="flex: 1; background: #F4F6F7; border-radius: 6px; padding: 15px; border: 1px solid #E5E7EB; min-height: 400px;">
+        <h3 style="color: #27AE60; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Resolved</h3>
+        {% for issue in resolved_issues %}
+        <div style="background: white; padding: 15px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 10px; border-left: 4px solid #27AE60;">
+            <a href="/edit_issue/{{ issue.id }}" style="text-decoration: none; color: #2C3E50; font-weight: bold; display: block; margin-bottom: 5px;">{{ issue.title }}</a>
+            <span style="font-size: 12px; background: #F4F6F6; color: #7F8C8D; padding: 3px 6px; border-radius: 3px;">{{ issue.severity }}</span>
+            <span style="font-size: 12px; color: #95A5A6; float: right;">#{{ issue.id }}</span>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
