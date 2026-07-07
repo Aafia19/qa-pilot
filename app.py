@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
@@ -55,6 +55,45 @@ def dashboard():
         critical_issues=critical_issues,
         in_qa_issues=in_qa_issues
     )
+@app.route('/users')
+def users():
+    all_users = User.query.all()
+    return render_template('users.html', users=all_users)
 
+@app.route('/add_user', methods=['GET', 'POST'])
+def add_user():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        role = request.form['role']
+        
+        new_user = User(email=email, password=password, role=role)
+        db.session.add(new_user)
+        db.session.commit()
+        
+        return redirect(url_for('users'))
+@app.route('/delete_user/<int:id>')
+def delete_user(id):
+    user_to_delete = User.query.get_or_404(id)
+    db.session.delete(user_to_delete)
+    db.session.commit()
+    return redirect(url_for('users'))
+        
+@app.route('/edit_user/<int:id>', methods=['GET', 'POST']). #this functions helps to edit a user information without having to delete the whole thing
+def edit_user(id):
+    user_to_edit = User.query.get_or_404(id)
+    
+    if request.method == 'POST':
+        user_to_edit.email = request.form['email']
+        user_to_edit.role = request.form['role']
+        
+        if request.form['password']:
+            user_to_edit.password = request.form['password']
+            
+        db.session.commit()
+        return redirect(url_for('users'))
+        
+    return render_template('edit_user.html', user=user_to_edit)
+    return render_template('add_user.html')
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

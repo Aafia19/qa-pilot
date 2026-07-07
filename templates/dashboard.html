@@ -48,8 +48,12 @@
 
 <!-- Top Chart Row -->
 <div class="chart-row">
-    <div class="chart-box">Issues by Status Chart</div>
-    <div class="chart-box">Test Results Chart</div>
+    <div class="chart-box">
+        <canvas id="statusChart"></canvas>
+    </div>
+    <div class="chart-box">
+        <canvas id="resultsChart"></canvas>
+    </div>
 </div>
 
 <!-- Bottom Row -->
@@ -57,4 +61,33 @@
     <div class="chart-box">Release Readiness</div>
     <div class="chart-box">Recent Activity</div>
 </div>
+<script>
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Open', 'In QA', 'Critical'],
+            datasets: [{
+                // These are the variables dynamically pulled from your SQLite database!
+                data: [{{ total_issues }}, {{ in_qa_issues }}, {{ critical_issues }}],
+                backgroundColor: ['#F39C12', '#3498DB', '#C0392B'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' },
+                title: { 
+                    display: true, 
+                    text: 'Issues by Status', 
+                    color: '#2C3E50', 
+                    font: { size: 16 } 
+                }
+            }
+        }
+    });
+</script>
 {% endblock %}
