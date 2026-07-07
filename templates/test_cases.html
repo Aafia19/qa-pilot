@@ -14,6 +14,7 @@
                 <th style="padding: 12px 8px;">Title</th>
                 <th style="padding: 12px 8px;">Linked Issue</th>
                 <th style="padding: 12px 8px;">Status</th>
+                <th style="padding: 12px 8px;">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -29,9 +30,12 @@
                     {% endif %}
                 </td>
                 <td style="padding: 12px 8px;">
-                    <span style="background-color: #F4F6F6; color: #7F8C8D; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                    <span style="background-color: {% if test.status == 'Passed' %}#E8F8F5; color: #16A085;{% elif test.status == 'Failed' %}#FDEDEC; color: #C0392B;{% elif test.status == 'Blocked' %}#FEF9E7; color: #F39C12;{% else %}#F4F6F6; color: #7F8C8D;{% endif %} padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
                         {{ test.status }}
                     </span>
+                </td>
+                <td style="padding: 12px 8px;">
+                    <a href="/edit_test_case/{{ test.id }}" style="color: #3498DB; text-decoration: none;">Execute / Edit</a>
                 </td>
             </tr>
             {% endfor %}

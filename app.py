@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, Response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
@@ -178,6 +178,70 @@ def add_test_case():
         
     active_issues = Issue.query.filter(Issue.status != 'Resolved').all()
     return render_template('add_test_case.html', issues=active_issues)
+
+@app.route('/edit_test_case/<int:id>', methods=['GET', 'POST'])
+def edit_test_case(id):
+    test_to_edit = TestCase.query.get_or_404(id)
+    
+    if request.method == 'POST':
+        test_to_edit.title = request.form['title']
+        test_to_edit.description = request.form['description']
+        test_to_edit.status = request.form['status']
+        issue_id = request.form['issue_id']
+        
+        if issue_id == "":
+            test_to_edit.issue_id = None
+        else:
+            test_to_edit.issue_id = issue_id
+            
+        db.session.commit()
+        return redirect(url_for('test_cases'))
+        
+    active_issues = Issue.query.filter(Issue.status != 'Resolved').all()
+    return render_template('edit_test_case.html', test_case=test_to_edit, issues=active_issues)
+
+@app.route('/release')
+def release():
+    total_open = Issue.query.filter(Issue.status != 'Resolved').count()
+    critical_open = Issue.query.filter(Issue.status != 'Resolved', Issue.severity == 'Critical').count()
+    
+    total_tests = TestCase.query.count()
+    passed_tests = TestCase.query.filter_by(status='Passed').count()
+    blocked_tests = TestCase.query.filter_by(status='Blocked').count()
+    
+    pass_rate = 0
+    if total_tests > 0:
+        pass_rate = int((passed_tests / total_tests) * 100)
+        
+    if critical_open > 0 or blocked_tests > 0:
+        status = "Not Ready"
+        color = "#C0392B"
+    elif pass_rate < 80:
+        status = "Needs Review"
+        color = "#F39C12"
+    else:
+        status = "Ready for Release"
+        color = "#27AE60"
+        
+    return render_template('release.html', 
+                           total_open=total_open, 
+                           critical_open=critical_open,
+                           total_tests=total_tests,
+                           pass_rate=pass_rate,
+                           status=status,
+                           color=color)
+
+@app.route('/export')
+def export():
+    issues = Issue.query.all()
+    
+    def generate():
+        yield 'ID,Title,Status,Severity,Date\n'
+        for issue in issues:
+            yield f'{issue.id},"{issue.title}",{issue.status},{issue.severity},{issue.date_created.strftime("%Y-%m-%d")}\n'
+
+    return Response(generate(), mimetype='text/csv', headers={'Content-Disposition': 'attachment; filename=issues_export.csv'})
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

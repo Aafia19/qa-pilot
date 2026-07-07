@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <h2 style="color: #2C3E50; margin: 0;">Release Readiness</h2>
+    <a href="/export" style="background-color: #27AE60; color: white; padding: 10px 16px; text-decoration: none; border-radius: 4px; font-weight: bold;">Download CSV Report</a>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #CCCCCC; border-radius: 4px; padding: 40px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); text-align: center; margin-bottom: 24px;">
+    <h3 style="color: #7F8C8D; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 14px;">Current Launch Status</h3>
+    <h1 style="color: {{ color }}; font-size: 48px; margin: 10px 0;">{{ status }}</h1>
+</div>
+
+<div style="display: flex; gap: 20px;">
+    <div style="flex: 1; background: #FFFFFF; border: 1px solid #CCCCCC; border-radius: 4px; padding: 24px; text-align: center;">
+        <p style="color: #7F8C8D; margin: 0 0 10px 0; font-weight: bold;">Test Pass Rate</p>
+        <h2 style="margin: 0; font-size: 36px; color: #2C3E50;">{{ pass_rate }}%</h2>
+    </div>
+    
+    <div style="flex: 1; background: #FFFFFF; border: 1px solid #CCCCCC; border-radius: 4px; padding: 24px; text-align: center;">
+        <p style="color: #7F8C8D; margin: 0 0 10px 0; font-weight: bold;">Critical Open Issues</p>
+        <h2 style="margin: 0; font-size: 36px; color: {% if critical_open > 0 %}#C0392B{% else %}#2C3E50{% endif %};">{{ critical_open }}</h2>
+    </div>
+
+    <div style="flex: 1; background: #FFFFFF; border: 1px solid #CCCCCC; border-radius: 4px; padding: 24px; text-align: center;">
+        <p style="color: #7F8C8D; margin: 0 0 10px 0; font-weight: bold;">Total Open Issues</p>
+        <h2 style="margin: 0; font-size: 36px; color: #2C3E50;">{{ total_open }}</h2>
+    </div>
+</div>
+{% endblock %}

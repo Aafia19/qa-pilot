@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 24px;">
+    <h2 style="color: #2C3E50; margin: 0;">Edit Test Case TC-{{ test_case.id }}</h2>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #CCCCCC; border-radius: 4px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); max-width: 600px;">
+    <form action="/edit_test_case/{{ test_case.id }}" method="POST">
+        
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; color: #2C3E50; font-weight: bold;">Test Title</label>
+            <input type="text" name="title" value="{{ test_case.title }}" required style="width: 100%; padding: 10px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; color: #2C3E50; font-weight: bold;">Execution Steps / Description</label>
+            <textarea name="description" rows="5" required style="width: 100%; padding: 10px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box; resize: vertical;">{{ test_case.description }}</textarea>
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-bottom: 24px;">
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 5px; color: #2C3E50; font-weight: bold;">Status</label>
+                <select name="status" style="width: 100%; padding: 10px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box; background-color: white;">
+                    <option value="Not Run" {% if test_case.status == 'Not Run' %}selected{% endif %}>Not Run</option>
+                    <option value="Passed" {% if test_case.status == 'Passed' %}selected{% endif %}>Passed</option>
+                    <option value="Failed" {% if test_case.status == 'Failed' %}selected{% endif %}>Failed</option>
+                    <option value="Blocked" {% if test_case.status == 'Blocked' %}selected{% endif %}>Blocked</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 5px; color: #2C3E50; font-weight: bold;">Link to Issue (Optional)</label>
+                <select name="issue_id" style="width: 100%; padding: 10px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box; background-color: white;">
+                    <option value="">-- No linked issue --</option>
+                    {% for issue in issues %}
+                    <option value="{{ issue.id }}" {% if test_case.issue_id|string == issue.id|string %}selected{% endif %}>#{{ issue.id }} - {{ issue.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" style="background-color: #3498DB; color: white; padding: 12px 16px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%;">Update Test Case</button>
+    </form>
+</div>
+{% endblock %}
