@@ -36,6 +36,12 @@
                     <a href="/edit_issue/{{ issue.id }}" style="color: #3498DB; text-decoration: none;">View / Edit</a>
                 </td>
             </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 40px; color: #95A5A6; background-color: #FDFEFE; border-bottom: 1px solid #EEEEEE;">
+                    No issues reported yet. Click <strong>+ Report Issue</strong> to get started.
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>

@@ -22,9 +22,12 @@
             <div style="flex: 1;">
                 <label style="display: block; margin-bottom: 5px; color: #2C3E50; font-weight: bold;">Status</label>
                 <select name="status" style="width: 100%; padding: 10px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box; background-color: white;">
-                    <option value="Open" {% if issue.status == 'Open' %}selected{% endif %}>Open</option>
-                    <option value="In QA" {% if issue.status == 'In QA' %}selected{% endif %}>In QA</option>
-                    <option value="Resolved" {% if issue.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+                    <option value="Backlog" {% if issue.status == 'Backlog' %}selected{% endif %}>Backlog</option>
+                    <option value="To Do" {% if issue.status == 'To Do' %}selected{% endif %}>To Do</option>
+                    <option value="In Progress" {% if issue.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                    <option value="QA Testing" {% if issue.status == 'QA Testing' %}selected{% endif %}>QA Testing</option>
+                    <option value="Blocked" {% if issue.status == 'Blocked' %}selected{% endif %}>Blocked</option>
+                    <option value="Done" {% if issue.status == 'Done' %}selected{% endif %}>Done</option>
                 </select>
             </div>
             <div style="flex: 1;">

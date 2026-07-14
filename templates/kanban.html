@@ -5,38 +5,65 @@
     <h2 style="color: #2C3E50; margin: 0;">Kanban Board</h2>
 </div>
 
-<div style="display: flex; gap: 20px; align-items: flex-start;">
+<div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; align-items: flex-start; overflow-x: auto; padding-bottom: 20px;">
     
-    <div style="flex: 1; background: #F4F6F7; border-radius: 6px; padding: 15px; border: 1px solid #E5E7EB; min-height: 400px;">
-        <h3 style="color: #F39C12; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Open</h3>
-        {% for issue in open_issues %}
-        <div style="background: white; padding: 15px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 10px; border-left: 4px solid #F39C12;">
-            <a href="/edit_issue/{{ issue.id }}" style="text-decoration: none; color: #2C3E50; font-weight: bold; display: block; margin-bottom: 5px;">{{ issue.title }}</a>
-            <span style="font-size: 12px; background: #F4F6F6; color: #7F8C8D; padding: 3px 6px; border-radius: 3px;">{{ issue.severity }}</span>
-            <span style="font-size: 12px; color: #95A5A6; float: right;">#{{ issue.id }}</span>
-        </div>
+    <div style="background: #F4F6F7; border-radius: 6px; padding: 15px; border: 1px solid #E5E7EB; min-height: 500px; min-width: 250px;">
+        <h3 style="color: #7F8C8D; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Backlog</h3>
+        {% if backlog|length == 0 %}
+            <div style="text-align: center; color: #95A5A6; font-size: 13px; padding: 20px 0; border: 2px dashed #D5D8DC; border-radius: 4px;">No issues in backlog.</div>
+        {% endif %}
+        {% for issue in backlog %}
+            {% include 'kanban_card.html' %}
         {% endfor %}
     </div>
 
-    <div style="flex: 1; background: #F4F6F7; border-radius: 6px; padding: 15px; border: 1px solid #E5E7EB; min-height: 400px;">
-        <h3 style="color: #3498DB; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">In QA</h3>
-        {% for issue in in_qa_issues %}
-        <div style="background: white; padding: 15px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 10px; border-left: 4px solid #3498DB;">
-            <a href="/edit_issue/{{ issue.id }}" style="text-decoration: none; color: #2C3E50; font-weight: bold; display: block; margin-bottom: 5px;">{{ issue.title }}</a>
-            <span style="font-size: 12px; background: #F4F6F6; color: #7F8C8D; padding: 3px 6px; border-radius: 3px;">{{ issue.severity }}</span>
-            <span style="font-size: 12px; color: #95A5A6; float: right;">#{{ issue.id }}</span>
-        </div>
+    <div style="background: #F4F6F7; border-radius: 6px; padding: 15px; border: 1px solid #E5E7EB; min-height: 500px; min-width: 250px;">
+        <h3 style="color: #34495E; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">To Do</h3>
+        {% if to_do|length == 0 %}
+            <div style="text-align: center; color: #95A5A6; font-size: 13px; padding: 20px 0; border: 2px dashed #D5D8DC; border-radius: 4px;">Ready for work.</div>
+        {% endif %}
+        {% for issue in to_do %}
+            {% include 'kanban_card.html' %}
         {% endfor %}
     </div>
 
-    <div style="flex: 1; background: #F4F6F7; border-radius: 6px; padding: 15px; border: 1px solid #E5E7EB; min-height: 400px;">
-        <h3 style="color: #27AE60; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Resolved</h3>
-        {% for issue in resolved_issues %}
-        <div style="background: white; padding: 15px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 10px; border-left: 4px solid #27AE60;">
-            <a href="/edit_issue/{{ issue.id }}" style="text-decoration: none; color: #2C3E50; font-weight: bold; display: block; margin-bottom: 5px;">{{ issue.title }}</a>
-            <span style="font-size: 12px; background: #F4F6F6; color: #7F8C8D; padding: 3px 6px; border-radius: 3px;">{{ issue.severity }}</span>
-            <span style="font-size: 12px; color: #95A5A6; float: right;">#{{ issue.id }}</span>
-        </div>
+    <div style="background: #F4F6F7; border-radius: 6px; padding: 15px; border: 1px solid #E5E7EB; min-height: 500px; min-width: 250px;">
+        <h3 style="color: #3498DB; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">In Progress</h3>
+        {% if in_progress|length == 0 %}
+            <div style="text-align: center; color: #95A5A6; font-size: 13px; padding: 20px 0; border: 2px dashed #D5D8DC; border-radius: 4px;">No active tasks.</div>
+        {% endif %}
+        {% for issue in in_progress %}
+            {% include 'kanban_card.html' %}
+        {% endfor %}
+    </div>
+
+    <div style="background: #F4F6F7; border-radius: 6px; padding: 15px; border: 1px solid #E5E7EB; min-height: 500px; min-width: 250px;">
+        <h3 style="color: #9B59B6; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">QA Testing</h3>
+        {% if qa_testing|length == 0 %}
+            <div style="text-align: center; color: #95A5A6; font-size: 13px; padding: 20px 0; border: 2px dashed #D5D8DC; border-radius: 4px;">Awaiting QA review.</div>
+        {% endif %}
+        {% for issue in qa_testing %}
+            {% include 'kanban_card.html' %}
+        {% endfor %}
+    </div>
+
+    <div style="background: #F4F6F7; border-radius: 6px; padding: 15px; border: 1px solid #E5E7EB; min-height: 500px; min-width: 250px;">
+        <h3 style="color: #E74C3C; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Blocked</h3>
+        {% if blocked|length == 0 %}
+            <div style="text-align: center; color: #95A5A6; font-size: 13px; padding: 20px 0; border: 2px dashed #D5D8DC; border-radius: 4px;">No blockers!</div>
+        {% endif %}
+        {% for issue in blocked %}
+            {% include 'kanban_card.html' %}
+        {% endfor %}
+    </div>
+
+    <div style="background: #F4F6F7; border-radius: 6px; padding: 15px; border: 1px solid #E5E7EB; min-height: 500px; min-width: 250px;">
+        <h3 style="color: #27AE60; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Done</h3>
+        {% if done|length == 0 %}
+            <div style="text-align: center; color: #95A5A6; font-size: 13px; padding: 20px 0; border: 2px dashed #D5D8DC; border-radius: 4px;">No finished tasks yet.</div>
+        {% endif %}
+        {% for issue in done %}
+            {% include 'kanban_card.html' %}
         {% endfor %}
     </div>
 

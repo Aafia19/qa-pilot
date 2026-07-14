@@ -1,91 +1,88 @@
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-    .metric-row { 
-        display: flex; 
-        gap: 20px; 
-        margin-bottom: 24px; 
-    }
-    .metric-card {
-        background: #FFFFFF; 
-        border: 1px solid #CCCCCC; 
-        border-radius: 4px;
-        padding: 20px; 
-        flex: 1; 
-        text-align: center;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    }
-    .metric-card p { margin: 0 0 10px 0; color: #7f8c8d; font-size: 14px; text-transform: uppercase; }
-    .metric-card h2 { margin: 0; color: #2C3E50; font-size: 28px; }
+<div style="margin-bottom: 24px;">
+    <h2 style="color: #2C3E50; margin: 0;">Dashboard</h2>
+</div>
+
+<div style="display: flex; gap: 15px; margin-bottom: 24px;">
+    <div style="flex: 1; background: white; border: 1px solid #CCC; border-radius: 4px; padding: 20px; text-align: center;">
+        <div style="color: #7F8C8D; font-size: 12px; font-weight: bold; margin-bottom: 10px;">OPEN ISSUES</div>
+        <div style="font-size: 28px; font-weight: bold; color: #2C3E50;">{{ total_open }}</div>
+    </div>
+    <div style="flex: 1; background: white; border: 1px solid #CCC; border-radius: 4px; padding: 20px; text-align: center;">
+        <div style="color: #7F8C8D; font-size: 12px; font-weight: bold; margin-bottom: 10px;">CRITICAL</div>
+        <div style="font-size: 28px; font-weight: bold; color: #C0392B;">{{ critical_issues }}</div>
+    </div>
+    <div style="flex: 1; background: white; border: 1px solid #CCC; border-radius: 4px; padding: 20px; text-align: center;">
+        <div style="color: #7F8C8D; font-size: 12px; font-weight: bold; margin-bottom: 10px;">IN QA</div>
+        <div style="font-size: 28px; font-weight: bold; color: #9B59B6;">{{ in_qa_issues }}</div>
+    </div>
+    <div style="flex: 1; background: white; border: 1px solid #CCC; border-radius: 4px; padding: 20px; text-align: center;">
+        <div style="color: #7F8C8D; font-size: 12px; font-weight: bold; margin-bottom: 10px;">PASS RATE</div>
+        <div style="font-size: 28px; font-weight: bold; color: #27AE60;">{{ pass_rate }}%</div>
+    </div>
+    <div style="flex: 1; background: white; border: 1px solid #CCC; border-radius: 4px; padding: 20px; text-align: center;">
+        <div style="color: #7F8C8D; font-size: 12px; font-weight: bold; margin-bottom: 10px;">BLOCKERS</div>
+        <div style="font-size: 28px; font-weight: bold; color: #F39C12;">{{ blockers }}</div>
+    </div>
+</div>
+
+<div style="display: flex; gap: 20px; margin-bottom: 24px;">
+    <div style="flex: 1; background: white; border: 1px solid #CCC; border-radius: 4px; padding: 20px;">
+        <h3 style="color: #2C3E50; margin-top: 0; text-align: center; margin-bottom: 20px;">Issues by Status</h3>
+        <div style="height: 300px; display: flex; justify-content: center;">
+            <canvas id="statusChart"></canvas>
+        </div>
+    </div>
     
-    .chart-row { 
-        display: flex; 
-        gap: 20px; 
-        margin-bottom: 24px; 
-    }
-    .chart-box {
-        background: #FFFFFF; 
-        border: 1px solid #CCCCCC; 
-        border-radius: 4px;
-        padding: 24px; 
-        flex: 1; 
-        height: 300px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        color: #2C3E50;
-        font-weight: bold;
-    }
-</style>
-
-<!-- 5 Summary Metric Cards -->
-<div class="metric-row">
-    <div class="metric-card"><p>Open Issues</p><h2>{{ total_issues }}</h2></div>
-    <div class="metric-card"><p>Critical</p><h2 style="color: #C0392B;">{{ critical_issues }}</h2></div>
-    <div class="metric-card"><p>In QA</p><h2>{{ in_qa_issues }}</h2></div>
-    <div class="metric-card"><p>Pass Rate</p><h2 style="color: #27AE60;">88%</h2></div>
-    <div class="metric-card"><p>Blockers</p><h2 style="color: #F39C12;">1</h2></div>
-</div>
-
-<!-- Top Chart Row -->
-<div class="chart-row">
-    <div class="chart-box">
-        <canvas id="statusChart"></canvas>
-    </div>
-    <div class="chart-box">
-        <canvas id="resultsChart"></canvas>
+    <div style="flex: 1; background: white; border: 1px solid #CCC; border-radius: 4px; padding: 40px 20px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+        <h3 style="color: #7F8C8D; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; font-size: 14px;">Current Launch Status</h3>
+        <h1 style="color: {{ readiness_color }}; font-size: 42px; margin: 10px 0;">{{ readiness_status }}</h1>
+        <p style="color: #95A5A6; font-size: 14px; margin-top: 15px; margin-bottom: 25px;">Calculated dynamically from open blockers and current test pass rate.</p>
+        <div>
+            <a href="/release" style="background-color: #3498DB; color: white; padding: 12px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px;">View Full Report</a>
+        </div>
     </div>
 </div>
 
-<!-- Bottom Row -->
-<div class="chart-row">
-    <div class="chart-box">Release Readiness</div>
-    <div class="chart-box">Recent Activity</div>
+<div style="background: white; border: 1px solid #CCC; border-radius: 4px; padding: 20px;">
+    <h3 style="color: #2C3E50; margin-top: 0; margin-bottom: 15px;">Recent Issues</h3>
+    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+        <tbody>
+            {% for issue in recent_issues %}
+            <tr style="border-bottom: 1px solid #EEEEEE;">
+                <td style="padding: 12px 8px; color: #7F8C8D; width: 60px;">#{{ issue.id }}</td>
+                <td style="padding: 12px 8px; font-weight: bold; color: #2C3E50;">{{ issue.title }}</td>
+                <td style="padding: 12px 8px; width: 120px;">
+                    <span style="background-color: #F4F6F6; color: #7F8C8D; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">{{ issue.status }}</span>
+                </td>
+                <td style="padding: 12px 8px; text-align: right; width: 80px;">
+                    <a href="/edit_issue/{{ issue.id }}" style="color: #3498DB; text-decoration: none;">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('statusChart').getContext('2d');
-    
     new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Open', 'In QA', 'Critical'],
+            labels: ['To Do / Backlog', 'In Progress', 'QA Testing', 'Blocked'],
             datasets: [{
-                // These are the variables dynamically pulled from your SQLite database!
-                data: [{{ total_issues }}, {{ in_qa_issues }}, {{ critical_issues }}],
-                backgroundColor: ['#F39C12', '#3498DB', '#C0392B'],
-                borderWidth: 0
+                data: [{{ to_do_count }}, {{ in_progress_count }}, {{ in_qa_issues }}, {{ blockers }}],
+                backgroundColor: ['#95A5A6', '#3498DB', '#9B59B6', '#E74C3C']
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { position: 'bottom' },
-                title: { 
-                    display: true, 
-                    text: 'Issues by Status', 
-                    color: '#2C3E50', 
-                    font: { size: 16 } 
-                }
+                legend: { position: 'bottom' }
             }
         }
     });

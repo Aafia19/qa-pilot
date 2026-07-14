@@ -7,7 +7,17 @@
 
 <div style="background: #FFFFFF; border: 1px solid #CCCCCC; border-radius: 4px; padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); max-width: 500px;">
     <form action="/edit_user/{{ user.id }}" method="POST">
-        
+        <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 5px; color: #2C3E50; font-weight: bold;">Full Name</label>
+                <input type="text" name="full_name" value="{{ user.full_name }}" required style="width: 100%; padding: 10px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 5px; color: #2C3E50; font-weight: bold;">Department</label>
+                <input type="text" name="department" value="{{ user.department }}" required style="width: 100%; padding: 10px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">
+            </div>
+        </div>
+
         <div style="margin-bottom: 15px;">
             <label style="display: block; margin-bottom: 5px; color: #2C3E50; font-weight: bold;">Email Address</label>
             <input type="email" name="email" value="{{ user.email }}" required style="width: 100%; padding: 10px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">
@@ -18,16 +28,24 @@
             <input type="password" name="password" style="width: 100%; padding: 10px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box;">
         </div>
 
-        <div style="margin-bottom: 24px;">
-            <label style="display: block; margin-bottom: 5px; color: #2C3E50; font-weight: bold;">System Role</label>
-            <select name="role" style="width: 100%; padding: 10px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box; background-color: white;">
-                <option value="Tester" {% if user.role == 'Tester' %}selected{% endif %}>Tester</option>
-                <option value="Developer" {% if user.role == 'Developer' %}selected{% endif %}>Developer</option>
-                <option value="QA Engineer" {% if user.role == 'QA Engineer' %}selected{% endif %}>QA Engineer</option>
-                <option value="Admin" {% if user.role == 'Admin' %}selected{% endif %}>Admin</option>
-            </select>
+        <div style="display: flex; gap: 15px; margin-bottom: 24px;">
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 5px; color: #2C3E50; font-weight: bold;">System Role</label>
+                <select name="role" style="width: 100%; padding: 10px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box; background-color: white;">
+                    <option value="Tester" {% if user.role == 'Tester' %}selected{% endif %}>Tester</option>
+                    <option value="Developer" {% if user.role == 'Developer' %}selected{% endif %}>Developer</option>
+                    <option value="QA Engineer" {% if user.role == 'QA Engineer' %}selected{% endif %}>QA Engineer</option>
+                    <option value="Admin" {% if user.role == 'Admin' %}selected{% endif %}>Admin</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 5px; color: #2C3E50; font-weight: bold;">Status</label>
+                <select name="status" style="width: 100%; padding: 10px; border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box; background-color: white;">
+                    <option value="Active" {% if user.status == 'Active' %}selected{% endif %}>Active</option>
+                    <option value="Inactive" {% if user.status == 'Inactive' %}selected{% endif %}>Inactive</option>
+                </select>
+            </div>
         </div>
-
         <button type="submit" style="background-color: #3498DB; color: white; padding: 12px 16px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%;">Update User</button>
     </form>
 </div>

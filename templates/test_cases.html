@@ -38,6 +38,12 @@
                     <a href="/edit_test_case/{{ test.id }}" style="color: #3498DB; text-decoration: none;">Execute / Edit</a>
                 </td>
             </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 40px; color: #95A5A6; background-color: #FDFEFE; border-bottom: 1px solid #EEEEEE;">
+                    No test cases created yet. Click <strong>+ Add Test Case</strong> to write one.
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
